@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista zadań</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Lista Zadań</h1>
+
+    <form action="{{ url_for('add_task') }}" method="POST">
+        <input type="text" name="task" placeholder="Dodaj nowe zadanie" required>
+        <button type="submit">Dodaj</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <span {% if task.done %}style="text-decoration: line-through"{% endif %}>{{ task.task }}</span>
+                {% if not task.done %}
+                    <a href="{{ url_for('mark_done', task_id=task.id) }}">Oznacz jako wykonane</a>
+                {% endif %}
+                <a href="{{ url_for('delete_task', task_id=task.id) }}">Usuń</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/">Powrót na stronę główną</a>
+</body>
+</html>
